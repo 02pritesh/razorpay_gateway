@@ -11,7 +11,7 @@ class RazorpayController extends Controller
 
     public function __construct()
     {
-        $this->api = new Api("rzp_test_W50AOTjqDXB5NR","QnrSROAINjxFX32NT4OKWDWd");
+        $this->api = new Api("rzp_test_W50AOTjqDXB5NR", "QnrSROAINjxFX32NT4OKWDWd");
     }
 
     public function form_page()
@@ -25,7 +25,7 @@ class RazorpayController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $order_id = rand('111111','999999');
+        $order_id = rand('111111', '999999');
 
         $orderData = [
             'receipt' => uniqid(),
@@ -34,14 +34,22 @@ class RazorpayController extends Controller
             'payment_capture' => 1, // auto capture
             'notes' => [
                 'offer_id' => $order_id,
-                
+
             ]
         ];
 
         $razorpayOrder = $order = $this->api->order->create($orderData);
         // dd($razorpayOrder);
-       
-        return view('order_detail',compact('order_id' ,'razorpayOrder'));
+
+        return view('order_detail', compact('order_id', 'razorpayOrder'));
+    }
+
+    public function success(Request $request)
+    {
+        $status = $this->api->payment->fetch($request->payment_id);
+        // dd($status);
+        if ($status->status == 'captured') {
+            return redirect('payment')->with('success', "successfully Payment");
+        }
     }
 }
-

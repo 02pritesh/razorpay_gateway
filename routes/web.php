@@ -21,3 +21,4 @@ Route::get('/', function () {
 
 Route::get('payment',[RazorpayController::class,'form_page']);
 Route::post('make-order',[RazorpayController::class,'make_order']);
+Route::get('success',[RazorpayController::class,'success']);

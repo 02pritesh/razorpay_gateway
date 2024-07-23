@@ -9,6 +9,17 @@
   <body>
     
     <div class="container">
+      @if (Session::has('success'))
+          <div class="btn btn-success" role="alert">
+            {{Session::get('success')}}
+          </div>
+      @endif
+      
+      @if (Session::has('fail'))
+      <div class="btn btn-danger" role="alert">
+        {{Session::get('fail')}}
+      </div>
+  @endif
       <h1>Make Payment</h1>
       <div class="row mt-5">
         <form action="{{url('make-order')}}" method="POST">
